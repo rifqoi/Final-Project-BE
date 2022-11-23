@@ -1,0 +1,1754 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "Binar E-Flight Ticket Platform  API",
+    "version": "1.0.11"
+  },
+  "servers": [
+    {
+      "url": "https://localhost:3001/"
+    }
+  ],
+  "tags": [
+    {
+      "name": "auth",
+      "description": "Related About Authentication"
+    },
+    {
+      "name": "users",
+      "description": "Related About Users"
+    },
+    {
+      "name": "airlines",
+      "description": "Related About Airlines"
+    },
+    {
+      "name": "airports",
+      "description": "Related About Airport"
+    },
+    {
+      "name": "flightList",
+      "description": "Related About Flight"
+    },
+    {
+      "name": "bookedFlight",
+      "description": "Related About Booked Flight"
+    }
+  ],
+  "paths": {
+    "/api/auth/register": {
+      "post": {
+        "tags": [
+          "auth"
+        ],
+        "description": "To register new user to the user table",
+        "responses": {
+          "200": {
+            "description": "if user successfully registered",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Success"
+                    },
+                    "massage": {
+                      "example": "Success Register New User"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "roleId": {
+                          "type": "integer",
+                          "format": "int64",
+                          "example": 3
+                        },
+                        "id": {
+                          "type": "integer",
+                          "format": "int64",
+                          "example": 1
+                        },
+                        "name": {
+                          "type": "string",
+                          "example": "Rei"
+                        },
+                        "contact": {
+                          "type": "string",
+                          "example": 801928346
+                        },
+                        "address": {
+                          "type": "string",
+                          "example": "jl. anggrek no.00"
+                        },
+                        "photo": {
+                          "type": "string",
+                          "example": "https://res.cloudinary.com/dbuxups0z/image/upload/v1665242741/test/z45vzrf84pjditp6jh4a.jpg"
+                        },
+                        "email": {
+                          "type": "string",
+                          "example": "rei@mail.com"
+                        },
+                        "password": {
+                          "type": "string",
+                          "example": "$2b$10$bYPE07NwXnMGE8cqkunNKe/KBcme4HcEIRYoLDfd5wz2GkoX0RvcW"
+                        },
+                        "createdAt": {
+                          "type": "string",
+                          "example": "2022-10-22T08:36:55.584Z"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "if email is already exist",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "example": "FAIL"
+                    },
+                    "message": {
+                      "example": "user with email : rei@mail.com already taken"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "if password length is below requirement",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "example": "FAIL"
+                    },
+                    "message": {
+                      "example": "minimum password length must be 8 charater or more"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/auth/login": {
+      "post": {
+        "tags": [
+          "auth"
+        ],
+        "description": "To Login with exist user",
+        "responses": {
+          "200": {
+            "description": "if user successfully Login",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Success"
+                    },
+                    "massage": {
+                      "example": "Success Login"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "integer",
+                          "format": "int64",
+                          "example": 1
+                        },
+                        "name": {
+                          "type": "string",
+                          "example": "Rei"
+                        },
+                        "email": {
+                          "type": "string",
+                          "example": "rei@mail.com"
+                        },
+                        "roleId": {
+                          "type": "integer",
+                          "format": "int64",
+                          "example": 3
+                        },
+                        "role": {
+                          "type": "string",
+                          "example": "member"
+                        },
+                        "token": {
+                          "type": "string",
+                          "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NiwibmFtZSI6InJlaSIsImVtYWlsIjoicmVpQG1haWwuY29tIiwicm9sZUlkIjozLCJpYXQiOjE2NjY0NTA4MDd9.Fn_Q3So3y0NadOzOG4YcUsu4CY37PPyt8weLnS9x7_Y"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "if password is incorrect",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "example": "FAIL"
+                    },
+                    "message": {
+                      "example": "The password you entered is incorrect"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "if email doesnt exist",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "example": "FAIL"
+                    },
+                    "message": {
+                      "example": "user with email : ri@mail.com is not found"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/auth/register-admin": {
+      "post": {
+        "tags": [
+          "auth"
+        ],
+        "description": "To promote member user to become admin",
+        "responses": {
+          "200": {
+            "description": "if super admin successfully promote an admin",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Success"
+                    },
+                    "massage": {
+                      "example": "Successful, promote to admin"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "if member is already is an admin",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "example": "FAIL"
+                    },
+                    "message": {
+                      "example": "user with email : rei@mail.com already admin"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "if email is doesnt exist",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "example": "FAIL"
+                    },
+                    "message": {
+                      "example": "user with email : ri@mail.com is not found"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "402": {
+            "description": "if user doesnt have an authority",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "example": "Unauthorized Access"
+                    },
+                    "message": {
+                      "example": "only super admin can access this page"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/auth/user": {
+      "get": {
+        "tags": [
+          "auth"
+        ],
+        "description": "To check current user",
+        "responses": {
+          "200": {
+            "description": "if user successfully found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Success"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "userId": {
+                          "type": "integer",
+                          "format": "int64",
+                          "example": 1
+                        },
+                        "email": {
+                          "type": "string",
+                          "example": "rei@mail.com"
+                        },
+                        "roleId": {
+                          "type": "integer",
+                          "format": "int64",
+                          "example": 3
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "if user token is invalid",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "example": "FAIL"
+                    },
+                    "message": {
+                      "example": "invalid token"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/users/": {
+      "get": {
+        "tags": [
+          "users"
+        ],
+        "description": "To retrieve the list of existing users",
+        "responses": {
+          "200": {
+            "description": "if data successfully retrieve",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "roleId": {
+                      "type": "integer",
+                      "format": "int64",
+                      "example": 3
+                    },
+                    "id": {
+                      "type": "integer",
+                      "format": "int64",
+                      "example": 1
+                    },
+                    "name": {
+                      "type": "string",
+                      "example": "Rei"
+                    },
+                    "contact": {
+                      "type": "string",
+                      "example": 801928346
+                    },
+                    "address": {
+                      "type": "string",
+                      "example": "jl. anggrek no.00"
+                    },
+                    "photo": {
+                      "type": "string",
+                      "example": "https://res.cloudinary.com/dbuxups0z/image/upload/v1665242741/test/z45vzrf84pjditp6jh4a.jpg"
+                    },
+                    "email": {
+                      "type": "string",
+                      "example": "rei@mail.com"
+                    },
+                    "password": {
+                      "type": "string",
+                      "example": "$2b$10$bYPE07NwXnMGE8cqkunNKe/KBcme4HcEIRYoLDfd5wz2GkoX0RvcW"
+                    },
+                    "createdAt": {
+                      "type": "string",
+                      "example": "2022-10-22T08:36:55.584Z"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "if failed to retrieve data",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "example": "FAIL"
+                    },
+                    "message": {
+                      "example": "Invalid Token"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/users/update/:id": {
+      "put": {
+        "tags": [
+          "users"
+        ],
+        "description": "To update the user on the users table",
+        "responses": {
+          "200": {
+            "description": "if data successfully updated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Success"
+                    },
+                    "massage": {
+                      "example": "Success Update New User"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "roleId": {
+                          "type": "integer",
+                          "format": "int64",
+                          "example": 3
+                        },
+                        "id": {
+                          "type": "integer",
+                          "format": "int64",
+                          "example": 1
+                        },
+                        "name": {
+                          "type": "string",
+                          "example": "Adit"
+                        },
+                        "contact": {
+                          "type": "string",
+                          "example": 801928346
+                        },
+                        "address": {
+                          "type": "string",
+                          "example": "jl. anggrek no.00"
+                        },
+                        "photo": {
+                          "type": "string",
+                          "example": "https://res.cloudinary.com/dbuxups0z/image/upload/v1665242741/test/z45vzrf84pjditp6jh4a.jpg"
+                        },
+                        "email": {
+                          "type": "string",
+                          "example": "Adit@mail.com"
+                        },
+                        "password": {
+                          "type": "string",
+                          "example": "$2b$10$bYPE07NwXnMGE8cqkunNKe/KBcme4HcEIRYoLDfd5wz2GkoX0RvcW"
+                        },
+                        "createdAt": {
+                          "type": "string",
+                          "example": "2022-10-22T08:36:55.584Z"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "if doesnt have authority to update  data",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "example": "Unauthorized Access"
+                    },
+                    "message": {
+                      "example": "only super admin and admin can access this page"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/users/delete/:id": {
+      "delete": {
+        "tags": [
+          "users"
+        ],
+        "description": "To delete the user on the users table",
+        "responses": {
+          "200": {
+            "description": "if data successfully deleted",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Success"
+                    },
+                    "massage": {
+                      "example": "Success Delete user with id: 13, deleted by suAdmin"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "if doesnt have authority to delete data",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "example": "Unauthorized Access"
+                    },
+                    "message": {
+                      "example": "only super admin and admin can access this page"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/airlines/": {
+      "get": {
+        "tags": [
+          "airlines"
+        ],
+        "description": "To retrieve the list of existing airlines",
+        "responses": {
+          "200": {
+            "description": "if data successfully retrieve",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "OK"
+                    },
+                    "massage": {
+                      "example": "Success"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "cars": {
+                          "type": "array",
+                          "items": {
+                            "properties": {
+                              "id": {
+                                "type": "integer",
+                                "format": "int64",
+                                "example": 1
+                              },
+                              "airlinesName": {
+                                "type": "string",
+                                "example": "Air Asia"
+                              },
+                              "airlinesLogo": {
+                                "type": "string",
+                                "example": "https://res.cloudinary.com/dbuxups0z/image/upload/v1665242741/test/z45vzrf84pjditp6jh4a.jpg"
+                              },
+                              "createdAt": {
+                                "type": "string",
+                                "example": "2022-10-22T08:36:55.584Z"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "if failed to retrieve data",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "example": "FAIL"
+                    },
+                    "message": {
+                      "example": "Invalid Token"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/airlines/add-airlines": {
+      "post": {
+        "tags": [
+          "airlines"
+        ],
+        "description": "To add new airlines to the airlines table",
+        "responses": {
+          "200": {
+            "description": "if data successfully added",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Success"
+                    },
+                    "massage": {
+                      "example": "Success Add New Car"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "integer",
+                          "format": "int64",
+                          "example": 2
+                        },
+                        "airlinesName": {
+                          "type": "string",
+                          "example": "Lion Air"
+                        },
+                        "airlinesLogo": {
+                          "type": "string",
+                          "example": "https://res.cloudinary.com/dbuxups0z/image/upload/v1665242741/test/z45vzrf84pjditp6jh4a.jpg"
+                        },
+                        "createdAt": {
+                          "type": "string",
+                          "example": "2022-10-22T08:36:55.584Z"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "if doesnt have authority to add new data",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "example": "Unauthorized Access"
+                    },
+                    "message": {
+                      "example": "only super admin and admin can access this page"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/airlines/update/:id": {
+      "put": {
+        "tags": [
+          "airlines"
+        ],
+        "description": "To update the airlines on the airlines table",
+        "responses": {
+          "200": {
+            "description": "if data successfully updated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Success"
+                    },
+                    "massage": {
+                      "example": "Success Update airlines"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "integer",
+                          "format": "int64",
+                          "example": 2
+                        },
+                        "airlinesName": {
+                          "type": "string",
+                          "example": "Nusantara Air"
+                        },
+                        "airlinesLogo": {
+                          "type": "string",
+                          "example": "https://res.cloudinary.com/dbuxups0z/image/upload/v1665242741/test/z45vzrf84pjditp6jh4a.jpg"
+                        },
+                        "createdAt": {
+                          "type": "string",
+                          "example": "2022-10-22T08:36:55.584Z"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "if doesnt have authority to update  data",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "example": "Unauthorized Access"
+                    },
+                    "message": {
+                      "example": "only super admin and admin can access this page"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/airlines/delete/:id": {
+      "delete": {
+        "tags": [
+          "airlines"
+        ],
+        "description": "To delete the airlines on the airlines table",
+        "responses": {
+          "200": {
+            "description": "if data successfully deleted",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Success"
+                    },
+                    "massage": {
+                      "example": "Success Delete airlines with id: 13, deleted by suAdmin"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "if doesnt have authority to delete data",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "example": "Unauthorized Access"
+                    },
+                    "message": {
+                      "example": "only super admin and admin can access this page"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/airport/": {
+      "get": {
+        "tags": [
+          "airports"
+        ],
+        "description": "To retrieve the list of existing airports",
+        "responses": {
+          "200": {
+            "description": "if data successfully retrieve",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "OK"
+                    },
+                    "massage": {
+                      "example": "Success"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "cars": {
+                          "type": "array",
+                          "items": {
+                            "properties": {
+                              "id": {
+                                "type": "integer",
+                                "format": "int64",
+                                "example": 1
+                              },
+                              "airportName": {
+                                "type": "string",
+                                "example": "Juanda"
+                              },
+                              "airportLocation": {
+                                "type": "string",
+                                "example": "Surabaya"
+                              },
+                              "createdAt": {
+                                "type": "string",
+                                "example": "2022-10-22T08:36:55.584Z"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "if failed to retrieve data",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "example": "FAIL"
+                    },
+                    "message": {
+                      "example": "Invalid Token"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/airport/add-airport": {
+      "post": {
+        "tags": [
+          "airports"
+        ],
+        "description": "To add new airlines to the airlines table",
+        "responses": {
+          "200": {
+            "description": "if data successfully added",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Success"
+                    },
+                    "massage": {
+                      "example": "Success Add New Car"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "integer",
+                          "format": "int64",
+                          "example": 2
+                        },
+                        "airportName": {
+                          "type": "string",
+                          "example": "Adisutjipto"
+                        },
+                        "airportLocation": {
+                          "type": "string",
+                          "example": "Yogyakarta"
+                        },
+                        "createdAt": {
+                          "type": "string",
+                          "example": "2022-10-22T08:36:55.584Z"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "if doesnt have authority to add new data",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "example": "Unauthorized Access"
+                    },
+                    "message": {
+                      "example": "only super admin and admin can access this page"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/airport/update/:id": {
+      "put": {
+        "tags": [
+          "airports"
+        ],
+        "description": "To update the airport on the airports table",
+        "responses": {
+          "200": {
+            "description": "if data successfully updated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Success"
+                    },
+                    "massage": {
+                      "example": "Success Update airlines"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "integer",
+                          "format": "int64",
+                          "example": 1
+                        },
+                        "airportName": {
+                          "type": "string",
+                          "example": "Soekarno–Hatta"
+                        },
+                        "airportLocation": {
+                          "type": "string",
+                          "example": "Tangerang"
+                        },
+                        "createdAt": {
+                          "type": "string",
+                          "example": "2022-10-22T08:36:55.584Z"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "if doesnt have authority to update  data",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "example": "Unauthorized Access"
+                    },
+                    "message": {
+                      "example": "only super admin and admin can access this page"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/airport/delete/:id": {
+      "delete": {
+        "tags": [
+          "airports"
+        ],
+        "description": "To delete the airport on the airports table",
+        "responses": {
+          "200": {
+            "description": "if data successfully deleted",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Success"
+                    },
+                    "massage": {
+                      "example": "Success Delete airport with id: 13, deleted by suAdmin"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "if doesnt have authority to delete data",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "example": "Unauthorized Access"
+                    },
+                    "message": {
+                      "example": "only super admin and admin can access this page"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/flight-list/": {
+      "get": {
+        "tags": [
+          "flightList"
+        ],
+        "description": "To retrieve the list of existing flightList",
+        "responses": {
+          "200": {
+            "description": "if data successfully retrieve",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "OK"
+                    },
+                    "massage": {
+                      "example": "Success"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "cars": {
+                          "type": "array",
+                          "items": {
+                            "properties": {
+                              "id": {
+                                "type": "integer",
+                                "format": "int64",
+                                "example": 1
+                              },
+                              "airlinesId": {
+                                "type": "integer",
+                                "format": "int64",
+                                "example": 1
+                              },
+                              "planeNo": {
+                                "type": "string",
+                                "example": "G012"
+                              },
+                              "departureAirportId": {
+                                "type": "integer",
+                                "format": "int64",
+                                "example": 1
+                              },
+                              "arrivalAirportId": {
+                                "type": "integer",
+                                "format": "int64",
+                                "example": 2
+                              },
+                              "departureAirportDatetime": {
+                                "type": "string",
+                                "example": "2022-10-22T08:36:55.584Z"
+                              },
+                              "arrivalAirportDatetime": {
+                                "type": "string",
+                                "example": "2022-11-22T08:36:55.584Z"
+                              },
+                              "seats": {
+                                "type": "string",
+                                "example": 150
+                              },
+                              "price": {
+                                "type": "integer",
+                                "example": 3000000
+                              },
+                              "createdAt": {
+                                "type": "string",
+                                "example": "2022-09-22T08:36:55.584Z"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "if failed to retrieve data",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "example": "FAIL"
+                    },
+                    "message": {
+                      "example": "Invalid Token"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/flight-list/add-flight-list": {
+      "post": {
+        "tags": [
+          "flightList"
+        ],
+        "description": "To add new flight list to the flightList table",
+        "responses": {
+          "200": {
+            "description": "if data successfully added",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Success"
+                    },
+                    "massage": {
+                      "example": "Success Add New Car"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "integer",
+                          "format": "int64",
+                          "example": 2
+                        },
+                        "airlinesId": {
+                          "type": "integer",
+                          "format": "int64",
+                          "example": 1
+                        },
+                        "planeNo": {
+                          "type": "string",
+                          "example": "G012"
+                        },
+                        "departureAirportId": {
+                          "type": "integer",
+                          "format": "int64",
+                          "example": 1
+                        },
+                        "arrivalAirportId": {
+                          "type": "integer",
+                          "format": "int64",
+                          "example": 2
+                        },
+                        "departureAirportDatetime": {
+                          "type": "string",
+                          "example": "2022-11-22T08:36:55.584Z"
+                        },
+                        "arrivalAirportDatetime": {
+                          "type": "string",
+                          "example": "2022-12-22T08:36:55.584Z"
+                        },
+                        "seats": {
+                          "type": "string",
+                          "example": 150
+                        },
+                        "price": {
+                          "type": "integer",
+                          "example": 3500000
+                        },
+                        "createdAt": {
+                          "type": "string",
+                          "example": "2022-10-22T08:36:55.584Z"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "if doesnt have authority to add new data",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "example": "Unauthorized Access"
+                    },
+                    "message": {
+                      "example": "only super admin and admin can access this page"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/flight-list/update/:id": {
+      "put": {
+        "tags": [
+          "flightList"
+        ],
+        "description": "To update the flight list on the flightList table",
+        "responses": {
+          "200": {
+            "description": "if data successfully updated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Success"
+                    },
+                    "massage": {
+                      "example": "Success Update flightList"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "integer",
+                          "format": "int64",
+                          "example": 2
+                        },
+                        "airlinesId": {
+                          "type": "integer",
+                          "format": "int64",
+                          "example": 2
+                        },
+                        "planeNo": {
+                          "type": "string",
+                          "example": "G012"
+                        },
+                        "departureAirportId": {
+                          "type": "integer",
+                          "format": "int64",
+                          "example": 1
+                        },
+                        "arrivalAirportId": {
+                          "type": "integer",
+                          "format": "int64",
+                          "example": 2
+                        },
+                        "departureAirportDatetime": {
+                          "type": "string",
+                          "example": "2022-11-22T08:36:55.584Z"
+                        },
+                        "arrivalAirportDatetime": {
+                          "type": "string",
+                          "example": "2022-12-22T08:36:55.584Z"
+                        },
+                        "seats": {
+                          "type": "string",
+                          "example": 150
+                        },
+                        "price": {
+                          "type": "integer",
+                          "example": 2500000
+                        },
+                        "createdAt": {
+                          "type": "string",
+                          "example": "2022-10-22T08:36:55.584Z"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "if doesnt have authority to update  data",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "example": "Unauthorized Access"
+                    },
+                    "message": {
+                      "example": "only super admin and admin can access this page"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/flight-list/delete/:id": {
+      "delete": {
+        "tags": [
+          "flightList"
+        ],
+        "description": "To delete the flight list on the flightList table",
+        "responses": {
+          "200": {
+            "description": "if data successfully deleted",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Success"
+                    },
+                    "massage": {
+                      "example": "Success Delete flightList with id: 13, deleted by suAdmin"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "if doesnt have authority to delete data",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "example": "Unauthorized Access"
+                    },
+                    "message": {
+                      "example": "only super admin and admin can access this page"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/booked-flight/": {
+      "get": {
+        "tags": [
+          "bookedFlight"
+        ],
+        "description": "To retrieve the list of existing booked flight",
+        "responses": {
+          "200": {
+            "description": "if data successfully retrieve",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "OK"
+                    },
+                    "massage": {
+                      "example": "Success"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "cars": {
+                          "type": "array",
+                          "items": {
+                            "properties": {
+                              "id": {
+                                "type": "integer",
+                                "format": "int64",
+                                "example": 1
+                              },
+                              "flightId": {
+                                "type": "string",
+                                "example": 1
+                              },
+                              "name": {
+                                "type": "string",
+                                "example": "Rei"
+                              },
+                              "address": {
+                                "type": "string",
+                                "example": "jl. anggrek no.00"
+                              },
+                              "contact": {
+                                "type": "string",
+                                "example": 80192834
+                              },
+                              "createdAt": {
+                                "type": "string",
+                                "example": "2022-09-22T08:36:55.584Z"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "if failed to retrieve data",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "example": "FAIL"
+                    },
+                    "message": {
+                      "example": "Invalid Token"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/booked-flight/add-booke-flight": {
+      "post": {
+        "tags": [
+          "bookedFlight"
+        ],
+        "description": "To add new booked flight to the bookedFlight table",
+        "responses": {
+          "200": {
+            "description": "if data successfully added",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Success"
+                    },
+                    "massage": {
+                      "example": "Success Add New booked Flight"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "integer",
+                          "format": "int64",
+                          "example": 1
+                        },
+                        "flightId": {
+                          "type": "string",
+                          "example": 1
+                        },
+                        "name": {
+                          "type": "string",
+                          "example": "Rei"
+                        },
+                        "address": {
+                          "type": "string",
+                          "example": "jl. anggrek no.00"
+                        },
+                        "contact": {
+                          "type": "string",
+                          "example": 80192834
+                        },
+                        "createdAt": {
+                          "type": "string",
+                          "example": "2022-09-22T08:36:55.584Z"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "if doesnt have authority to add new data",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "example": "Unauthorized Access"
+                    },
+                    "message": {
+                      "example": "only super admin and admin can access this page"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/booked-flight/update/:id": {
+      "put": {
+        "tags": [
+          "bookedFlight"
+        ],
+        "description": "To update the booked flight on the bookedFlight table",
+        "responses": {
+          "200": {
+            "description": "if data successfully updated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Success"
+                    },
+                    "massage": {
+                      "example": "Success Update booked flight"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "integer",
+                          "format": "int64",
+                          "example": 1
+                        },
+                        "flightId": {
+                          "type": "string",
+                          "example": 2
+                        },
+                        "name": {
+                          "type": "string",
+                          "example": "Rei"
+                        },
+                        "address": {
+                          "type": "string",
+                          "example": "jl. anggrek no.00"
+                        },
+                        "contact": {
+                          "type": "string",
+                          "example": 80192834
+                        },
+                        "createdAt": {
+                          "type": "string",
+                          "example": "2022-09-22T08:36:55.584Z"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "if doesnt have authority to update  data",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "example": "Unauthorized Access"
+                    },
+                    "message": {
+                      "example": "only super admin and admin can access this page"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/booked-flight/delete/:id": {
+      "delete": {
+        "tags": [
+          "bookedFlight"
+        ],
+        "description": "To delete the booked flight on the bookedFlight table",
+        "responses": {
+          "200": {
+            "description": "if data successfully deleted",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Success"
+                    },
+                    "massage": {
+                      "example": "Success Delete booked flight with id: 13, deleted by suAdmin"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "if doesnt have authority to delete data",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "example": "Unauthorized Access"
+                    },
+                    "message": {
+                      "example": "only super admin and admin can access this page"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
