@@ -3,6 +3,7 @@ const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 
 const {
+  ApplicationController,
   AuthenticationController,
 } = require("./controllers");
 
@@ -22,9 +23,9 @@ function apply(app) {
 
   app.get("/", applicationController.handleGetRoot);
 
-  app.post("/v1/auth/login", authenticationController.handleLogin);
-  app.post("/v1/auth/register", authenticationController.handleRegister);
-  app.get("/v1/auth/whoami", authenticationController.authorize(accessControl.CUSTOMER), authenticationController.handleGetUser);
+  app.post("/api/auth/login", authenticationController.handleLogin);
+  app.post("/api/auth/register", authenticationController.handleRegister);
+  app.get("/api/auth/user", authenticationController.authorize(accessControl.CUSTOMER), authenticationController.handleGetUser);
 
   app.use(applicationController.handleNotFound);
   app.use(applicationController.handleError);
