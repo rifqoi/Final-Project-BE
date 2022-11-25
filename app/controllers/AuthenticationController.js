@@ -72,12 +72,18 @@ class AuthenticationController extends ApplicationController {
       const accessToken = this.createTokenFromUser(user, user.Role);
 
       res.status(201).json({
+        status: "OK",
+        message: "Success Login",
+        user: user.email,
         accessToken,
       })
     }
 
     catch(err) {
-      next(err);
+      res.status(err.statusCode || 400).json({
+        status: "FAIL",
+        message: err.message,
+      });
     }
   }
 
@@ -101,6 +107,9 @@ class AuthenticationController extends ApplicationController {
     const accessToken = this.createTokenFromUser(user, role);
 
     res.status(201).json({
+      status: "OK",
+      message: "Success Register New User",
+      user: user.email,
       accessToken,
     })
   }
