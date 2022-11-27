@@ -3,24 +3,26 @@ const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 const uploader = require('./middleware/uploader')
 const {
-	ApplicationController,
-	AuthenticationController,
 	UserController,
+  ApplicationController,
+  AuthenticationController,
+  AirportController
 } = require("./controllers");
 const uploader = require('./middleware/uploader')
 const {
-	User,
-	Role,
+  User,
+  Role,
+  Airport
 } = require("./models");
 
 function apply(app) {
-	const roleModel = Role;
-	const userModel = User;
+  const roleModel = Role;
+  const userModel = User;
+  const airportModel = Airport;
 
-	const applicationController = new ApplicationController();
-	const authenticationController = new AuthenticationController({ bcrypt, jwt, roleModel, userModel, });
-	const userController = new UserController({ userModel });
-	const accessControl = authenticationController.accessControl;
+  const applicationController = new ApplicationController();
+  const authenticationController = new AuthenticationController({ bcrypt, jwt, roleModel, userModel, });
+  const airportController = new AirportController({ airportModel });
 
 	app.get("/", applicationController.handleGetRoot);
 
@@ -28,6 +30,13 @@ function apply(app) {
 	app.post("/api/auth/register", authenticationController.handleRegister);
 	app.get("/api/auth/user", authenticationController.authorize(accessControl.CUSTOMER), authenticationController.handleGetUser);
 	app.put("/api/auth/update_user/:id", uploader.single("photoProfile"), authenticationController.handleUpdateUser);
+  app.get("/", applicationController.handleGetRoot);
+  
+  app.post("/api/v1/airports", airportController.handleCreateAirport);
+  app.get("/api/v1/airports", airportController.handleListAirport);
+  app.get("/api/v1/airports/:id", airportController.handleGetAirport);
+  app.put("/api/v1/airports/:id", airportController.handleUpdateAirport);
+  app.delete("/api/v1/airports/:id", airportController.handleDeleteAirport);
 
 	app.use(applicationController.handleNotFound);
 	app.use(applicationController.handleError);
