@@ -5,23 +5,33 @@ const bcrypt = require("bcryptjs");
 const {
   ApplicationController,
   AuthenticationController,
+  AirportController
 } = require("./controllers");
 
 const {
   User,
   Role,
+  Airport
 } = require("./models");
 
 function apply(app) {
   const roleModel = Role;
   const userModel = User;
+  const airportModel = Airport;
 
   const applicationController = new ApplicationController();
   const authenticationController = new AuthenticationController({ bcrypt, jwt, roleModel, userModel, });
+  const airportController = new AirportController({ airportModel });
 
   const accessControl = authenticationController.accessControl;
 
   app.get("/", applicationController.handleGetRoot);
+  
+  app.post("/api/v1/airports", airportController.handleCreateAirport);
+  app.get("/api/v1/airports", airportController.handleListAirport);
+  app.get("/api/v1/airports/:id", airportController.handleGetAirport);
+  app.put("/api/v1/airports/:id", airportController.handleUpdateAirport);
+  app.delete("/api/v1/airports/:id", airportController.handleDeleteAirport);
 
   app.post("/api/auth/login", authenticationController.handleLogin);
   app.post("/api/auth/register", authenticationController.handleRegister);
