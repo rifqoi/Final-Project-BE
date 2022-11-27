@@ -1,6 +1,7 @@
 const ApplicationController = require("./ApplicationController");
-const { EmailNotRegisteredError, EmailAlreadyTakenError, InsufficientAccessError, NotFoundError, WrongPasswordError } = require("../errors");
+const { ApiError, EmailNotRegisteredError, EmailAlreadyTakenError, InsufficientAccessError, NotFoundError, WrongPasswordError } = require("../errors");
 const { JWT_SIGNATURE_KEY } = require("../../config/application");
+const httpStatus = require('http-status');
 
 class AuthenticationController extends ApplicationController {
   constructor({
@@ -92,6 +93,28 @@ class AuthenticationController extends ApplicationController {
     const email = req.body.email.toLowerCase();
     const password = req.body.password;
     let existingUser = await this.userModel.findOne({ where: { email, }, });
+
+    if (!!existingUser) {
+      const err = new EmailAlreadyTakenError(email);
+      res.status(422).json(err);
+      return;
+    }
+
+    if (!email){
+      const err = new ApiError(httpStatus.BAD_REQUEST, "email cannot be empty");
+      res.status(422).json(err);
+      return;
+    } 
+    if (!name){
+      const err = new ApiError(httpStatus.BAD_REQUEST, "name cannot be empty");
+      res.status(422).json(err);
+      return;
+    }
+    if (!password){
+      const err = new ApiError(httpStatus.BAD_REQUEST, "password cannot be empty");
+      res.status(422).json(err);
+      return;
+    }
 
     const role = await this.roleModel.findOne({
       where: { name: this.accessControl.CUSTOMER }
