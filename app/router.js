@@ -6,23 +6,27 @@ const {
 	UserController,
   ApplicationController,
   AuthenticationController,
-  AirportController
+  AirportController,
+  AirplaneController
 } = require("./controllers");
 const uploader = require('./middleware/uploader')
 const {
   User,
   Role,
-  Airport
+  Airport,
+  Airplane
 } = require("./models");
 
 function apply(app) {
   const roleModel = Role;
   const userModel = User;
   const airportModel = Airport;
+  const airplaneModel = Airplane;
 
   const applicationController = new ApplicationController();
   const authenticationController = new AuthenticationController({ bcrypt, jwt, roleModel, userModel, });
   const airportController = new AirportController({ airportModel });
+  const airplaneController = new AirplaneController({ airplaneModel });
 
 	app.get("/", applicationController.handleGetRoot);
 
@@ -40,6 +44,11 @@ function apply(app) {
 
 	app.use(applicationController.handleNotFound);
 	app.use(applicationController.handleError);
+  app.post("/api/v1/airplanes", airplaneController.handleCreateAirplane);
+  app.get("/api/v1/airplanes/:id", airplaneController.handleGetAirplane);
+  app.put("/api/v1/airplanes/:id", airplaneController.handleUpdateAirplane);
+  app.delete("/api/v1/airplanes/:id", airplaneController.handleDeleteAirplane);
+  app.get("/api/v1/airplanes", airplaneController.handleListAirplane);
 
 	return app;
 }
